@@ -3,19 +3,19 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [:show, :update, :destroy]
   before_action :admin_user, only: [:index, :create]
     
-  # GET /products
+  # GET /users
   def index
     @users = User.all
 
     render json: { data: @users, code: 200 }
   end
 
-  # GET /products/1
+  # GET /users/1
   def show
     render json: { data: @user, code: 200 }
   end
 
-  # POST /products
+  # POST /users
   def create
     @user = User.new(user_params)
     
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /products/1
+  # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
       render json: { data: @user, code: 200 }
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /products/1
+  # DELETE /users/1
   def destroy
     @user.destroy
     render json: { data: "Record deleted", code: 200 }, status: :ok
@@ -46,11 +46,6 @@ class UsersController < ApplicationController
     def set_user
       @user = User.find(params[:id])
     end
-
-    # Only allow a trusted parameter "white list" through.
-    def user_params
-      params.permit(:username, :email, :password, :password_confirmation, :admin)
-    end
     
     def admin_user
       render json: { data: "Not Authorized", code: 401 }, status: 401 unless current_user.admin
@@ -59,5 +54,10 @@ class UsersController < ApplicationController
     def correct_user
       @user = User.find(params[:id])
       render json: { data: "Not Authorized", code: 401 }, status: 401 unless current_user == @user || current_user.admin 
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def user_params
+      params.permit(:username, :email, :password, :password_confirmation, :admin)
     end  
 end

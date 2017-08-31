@@ -16,9 +16,10 @@ class PlacementsController < ApplicationController
   def create
     @placement = Placement.new(placement_params)
     @placement.user_id = current_user.id
-
+    @product = Product.find_by(id: @placement.product_id) 
+    
     if @placement.save
-      render json: { data: @placement, code: 200 }, status: :created, location: @placement
+      render json: { data: [@placement, @product], code: 200 }, status: :created, location: @placement
     else
       render json: { data: @placement.errors, code: 422 }, status: :unprocessable_entity
     end
