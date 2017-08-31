@@ -19,6 +19,17 @@ Bundler.require(*Rails.groups)
 module ApiApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
+    config.generators do |g|
+      g.test_framework :rspec, fixture: true
+      g.factory_girl true
+      g.factory_girl dir: 'spec/factories'
+      g.view_specs false
+      g.helper_specs false
+      g.stylesheets = false
+      g.javascripts = false
+      g.helper = false  
+    end
+
     config.load_defaults 5.1
     config.autoload_paths << Rails.root.join('lib')
     # Settings in config/environments/* take precedence over those specified here.
